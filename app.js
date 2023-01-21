@@ -32,7 +32,12 @@ function updateItem(item){
         },
       })
         .then((response) => response.json())
-        .then((json) => console.log(json)); 
+        .then(
+            (json) => 
+           document.getElementById('id02').style.display='none',
+        //     // console.log(animals),
+        renderList(animals)
+        )
 }
 
 
@@ -89,7 +94,14 @@ function deletefunc(id){
   let btn1 = document.getElementById('id01').style.display='block';
            fetch(`http://localhost:3000/todos/${id}`,{
             method:'DELETE'
+          }) 
+          .then((json) => {
+            var f;
+            var filteredElements = animals.filter(function(item, id) { f = id; return item.id == id; });
+            animals.splice(f, 1)
+            renderList(animals)
           });
+          
 }
 function editfunc(id){
     let btn1 = document.getElementById('id02').style.display='block';
@@ -102,7 +114,7 @@ function editfunc(id){
     const editValue = editArrayItem[0].text
 
     document.getElementById(
-        "inputContainer"
+        "id02"
     ).innerHTML = `<input type="text" id="todoUpdateInput" 
          value="${editValue}" placeholder="update"/>
     <button style="width: 20%;border-radius: 10px;" id="update">Update</button>`;
@@ -113,15 +125,6 @@ function editfunc(id){
     updateBtn.addEventListener('click', function () {
         currentUpdateItem.text = todoUpdateInput.value
         updateItem(currentUpdateItem)
-        // animals = animals.map((item) => {
-        //     if (item.id == id) {
-        //         item.text = todoUpdateInput.value
-        //         return item;
-        //     } else {
-        //         return item;
-        //     }
-        // });
-
     });
   }
 
